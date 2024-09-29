@@ -1,221 +1,76 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main();
-double eqn(double n)
+double valueofb(vector<double> a, double b[], int current, int limit)
 {
-    return pow(n, 3) - (2 * n) - 5;
-}
-double modified_eqn(double n)
-{
-    return pow(5 + 2 * n, 0.3333);
-    // return (5 / (pow(n, 2) - 2));
-    // return (pow(n, 3) - 5) / 2;
-}
-void return_to_main()
-{
-    cout << "Do you want to find root again?(y/n): ";
-    char st;
-    cin >> st;
-    if (st == 'y')
+    double sum = 0;
+    cout << "b(" << current << ")= ";
+    for (int i = 0, j = current - 1, iteration = 0; iteration < limit; i++, j--)
     {
-        system("cls");
-        main();
-    }
-    else
-    {
-        system("cls");
-    }
-}
-void iteration()
-{
-    double initial_value;
-    cout << "Enter the initial value of x: ";
-    cin >> initial_value;
-    bool root_found = false;
-    int j = 0;
-    cout << "n\tXn-1\tXn\terr" << endl;
-
-    while (!root_found)
-    {
-        double new_value = modified_eqn(initial_value);
-        double err = 100;
-        double tolerance = 0.0001;
-        if (j != 0)
-        {
-            err = abs(new_value - initial_value);
-        }
-        if (j == 0)
-            cout << j + 1 << "\t" << initial_value << "\t" << new_value << "\t" << endl;
+        sum += a[i] * b[j];
+        // cout << "a(" << i << ")*b(" << j << ")= " << a[i] * b[j] << endl;
+        cout << "a(" << i << ")*b(" << j << ")";
+        if (iteration == limit - 1)
+            cout << "= ";
         else
-            cout << j + 1 << "\t" << initial_value << "\t" << new_value << "\t" << err << endl;
-
-        if (abs(modified_eqn(new_value)) <= tolerance || err <= tolerance)
-        {
-            root_found = true;
-            cout << "Root: " << new_value << " (approx.) with error: " << err << endl;
-        }
-        initial_value = new_value;
-        j++;
+            cout << " + ";
+        iteration++;
     }
-    return_to_main();
-}
-
-void bisection(double a, double b)
-{
-    cout << "Bisection Method" << endl;
-
-    bool root_found = false;
-    double arr[100];
-    int j = 0;
-    double tolerance = 0.0001;
-    cout << "n\ta\tb\tx\terr" << endl;
-    while (!root_found)
-    {
-        double x = (a + b) / 2;
-        arr[j] = x;
-        double err = 100;
-
-        if (j != 0)
-        {
-            err = abs(arr[j] - arr[j - 1]);
-        }
-
-        if (j == 0)
-            cout << j + 1 << "\t" << a << "\t" << b << "\t" << x << endl;
-        else
-            cout << j + 1 << "\t" << a << "\t" << b << "\t" << x << "\t" << err << endl;
-
-        if (abs(eqn(x)) <= tolerance || err <= tolerance)
-        {
-            root_found = true;
-            cout << "Root: " << x << " (approx.) with error: " << err << endl;
-        }
-        else
-        {
-
-            if (eqn(x) < 0)
-            {
-                a = x;
-            }
-            else
-            {
-                b = x;
-            }
-        }
-
-        j++;
-    }
-    cout << endl;
-
-    return_to_main();
-}
-void falsePosition(double a, double b)
-{
-    cout << "False Position" << endl;
-
-    bool root_found = false;
-    double arr[100];
-    int j = 0;
-    double tolerance = 0.0001;
-    cout << "n\ta\tb\tx\terr" << endl;
-    while (!root_found)
-    {
-        double x = (a * eqn(b) - b * eqn(a)) / (eqn(b) - eqn(a));
-        arr[j] = x;
-        double err = 100;
-
-        if (j != 0)
-        {
-            err = abs(arr[j] - arr[j - 1]);
-        }
-
-        if (j == 0)
-            cout << j + 1 << "\t" << a << "\t" << b << "\t" << x << endl;
-        else
-            cout << j + 1 << "\t" << a << "\t" << b << "\t" << x << "\t" << err << endl;
-
-        if (abs(eqn(x)) <= tolerance || err <= tolerance)
-        {
-            root_found = true;
-            cout << "Root: " << x << " (approx.) with error: " << err << endl;
-        }
-        else
-        {
-
-            if (eqn(x) < 0)
-            {
-                a = x;
-            }
-            else
-            {
-                b = x;
-            }
-        }
-
-        j++;
-    }
-    cout << endl;
-
-    return_to_main();
-}
-void interval(int menuChoiche)
-{
-    double a = 0, b;
-    int i = 1;
-    bool flag = false;
-    if (eqn(a) == 0)
-        cout << a << endl;
-    else
-    {
-        while (!flag)
-        {
-            if (eqn(a + i) * eqn(a) < 0)
-            {
-                b = a + i;
-                a = a + i - 1;
-                flag = true;
-            }
-            else if (eqn(a - i) * eqn(a) < 0)
-            {
-                b = a - i;
-                a = a - i - 1;
-                flag = true;
-            }
-            i++;
-        }
-        if (eqn(a) > 0)
-        {
-            swap(a, b);
-        }
-
-        if (menuChoiche == 1)
-            bisection(a, b);
-        else if (menuChoiche == 2)
-            falsePosition(a, b);
-    }
+    cout << sum << endl;
+    return sum;
 }
 int main()
 {
-    cout << "Finding Root of x^3-2x-5=0" << endl
-         << "\tMenu: " << endl
-         << "\t1. Bisection Method" << endl
-         << "\t2. False Position Method" << endl
-         << "\t3. Iteration Method" << endl
-         << "Your choice: ";
-    int menu_choice;
-    cin >> menu_choice;
-    switch (menu_choice)
+    int n;
+    cout << "Smallest Root Finding Using Ramanujan's Method\norder of equation: ";
+    cin >> n;
+    // double a[100] = {0};
+    vector<double> a(100, 0);
+    cout << "Enter the co-efficients in order (higher to lower): ";
+    for (int i = 0; i <= n; i++)
     {
-    case 1:
-        interval(menu_choice);
-        break;
-    case 2:
-        interval(menu_choice);
-        break;
-    case 3:
-        iteration();
-        break;
-    default:
-        break;
+        cin >> a[i];
+    }
+    double cont = a[n];
+    for (int i = 0; i < n; i++)
+    {
+        a[i] /= cont;
+        a[i] *= -1;
+    }
+    a[n] = 0;
+    reverse(a.begin(), a.begin() + 3);
+    cout << "\nThe series: " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "a(" << i << ")=" << a[i] << endl;
+    }
+    cout << endl;
+    double b[100] = {0};
+    b[0] = 1;
+    double ratio[100] = {1};
+    ratio[0] = b[0];
+    int current = 1;
+    bool rootfound = false;
+    while (!rootfound)
+    {
+        cout << "\n--> Step-" << current << endl;
+        b[current] = valueofb(a, b, current, n);
+        // cout << "b(" << current << "): " << b[current] << endl
+        //      << endl;
+        double err;
+        ratio[current] = b[current - 1] / b[current];
+        cout << "current ratio: b(" << current - 1 << ")/b(" << current << ")= " << ratio[current] << endl;
+        if (current >= 1)
+            err = abs((ratio[current]) - (ratio[current - 1]));
+        else
+            err = 100;
+        cout << "Error = " << err << endl;
+        if (err < 0.0001)
+        {
+            rootfound = true;
+            cout << fixed << setprecision(5);
+            cout << "\nThe smallest root is: " << ratio[current] << endl;
+        }
+        else
+            current++;
     }
 }
