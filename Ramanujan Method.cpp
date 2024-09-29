@@ -21,7 +21,7 @@ double valueofb(vector<double> a, double b[], int current, int limit)
 int main()
 {
     int n;
-    cout << "Smallest Root Finding Using Ramanujan's Method\norder of equation: ";
+    cout << "Using Ramanujan's Method To Find the Smallest Root\norder of equation: ";
     cin >> n;
     // double a[100] = {0};
     vector<double> a(100, 0);
